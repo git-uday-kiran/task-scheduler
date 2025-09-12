@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>bit.bees</groupId>
-    <artifactId>taskscheduler</artifactId>
+    <artifactId>task-scheduler</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>taskscheduler</name>
-    <description>taskscheduler</description>
+    <name>task-scheduler</name>
+    <description>Task Scheduler</description>
     <url/>
     <licenses>
         <license/>
