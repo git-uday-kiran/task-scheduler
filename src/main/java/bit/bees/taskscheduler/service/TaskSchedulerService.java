@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static java.util.Comparator.comparing;
+
 /**
  * Task Scheduler, schedules tasks every 10 seconds
  * Prints timestamp every 10 seconds
@@ -121,5 +123,16 @@ public class TaskSchedulerService {
 
     public long getReportCount() {
         return reportCount.get();
+    }
+
+    public void printTaskExecutionHistory() {
+        System.out.println("Task Executions: ");
+        System.out.println("------------------------------------------------------------------------");
+        getExecutionHistory().stream()
+                .sorted(comparing(TaskExecution::getTaskName)
+                        .thenComparing(TaskExecution::getExecutionType)
+                        .thenComparing(TaskExecution::getStartTime))
+                .forEach(System.out::println);
+        System.out.println("------------------------------------------------------------------------");
     }
 }

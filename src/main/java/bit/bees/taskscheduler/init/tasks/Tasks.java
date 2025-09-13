@@ -1,5 +1,6 @@
 package bit.bees.taskscheduler.init.tasks;
 
+import bit.bees.taskscheduler.service.TaskSchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,11 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class Tasks implements ApplicationContextAware {
 
-    private final TaskScheduler taskScheduler;
     private ApplicationContext applicationContext;
+
+    private final TaskScheduler taskScheduler;
+    private final TaskSchedulerService taskSchedulerService;
+
     private final Logger log = LoggerFactory.getLogger(Tasks.class);
 
     public void autoShutdown(long seconds) {
@@ -28,6 +32,7 @@ public class Tasks implements ApplicationContextAware {
         var scheduleTime = Instant.ofEpochMilli(startTime + TimeUnit.SECONDS.toMillis(seconds));
         Runnable shutdownTask = () -> {
             log.info("🔕 Elapsed {} seconds, shutting down gracefully...", seconds);
+            Runtime.getRuntime().addShutdownHook(new Thread(taskSchedulerService::printTaskExecutionHistory));
             SpringApplication.exit(applicationContext);
         };
         log.info("Auto shutdown in {} seconds", seconds);
